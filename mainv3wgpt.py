@@ -10,6 +10,9 @@ if creds_b64:
 else:
     print("[DEBUG] GOOGLE_CREDS_B64 present: False")
 
+print("[DEBUG] File exists after write:", os.path.exists("dopamine_bot_credentials.json"))
+print("[DEBUG] Current working directory:", os.getcwd())
+
 import asyncio
 import datetime
 import gspread
