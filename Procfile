@@ -1,0 +1,1 @@
+worker: python mainv3wgpt.py 
