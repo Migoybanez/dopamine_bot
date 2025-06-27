@@ -1,7 +1,18 @@
+import os
+import base64
+
+# Write Google credentials file from base64 env variable if present
+creds_b64 = os.getenv("GOOGLE_CREDS_B64")
+if creds_b64:
+    with open("dopamine_bot_credentials.json", "wb") as f:
+        f.write(base64.b64decode(creds_b64))
+    print("[DEBUG] GOOGLE_CREDS_B64 present: True")
+else:
+    print("[DEBUG] GOOGLE_CREDS_B64 present: False")
+
 import asyncio
 import datetime
 import gspread
-import os
 import openai
 from google.oauth2.service_account import Credentials
 from apscheduler.schedulers.background import BackgroundScheduler
