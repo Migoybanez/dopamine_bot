@@ -2364,8 +2364,11 @@ if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     scheduler = BackgroundScheduler()
     
-    # Schedule daily check-ins
-    scheduler.add_job(lambda: asyncio.run_coroutine_threadsafe(send_daily_checkins(app), loop), 'interval', seconds=CHECKIN_INTERVAL_SECONDS)
+    # Schedule daily check-ins at 9AM PHT (UTC+8)
+    scheduler.add_job(
+        lambda: asyncio.run_coroutine_threadsafe(send_daily_checkins(app), loop),
+        CronTrigger(hour=9, minute=0, timezone='Asia/Manila')
+    )
     
     # Schedule group prompts - all at 9AM PHT (UTC+8)
     # General: Monday (text) + Friday (poll)
@@ -2428,4 +2431,3 @@ if __name__ == '__main__':
     print("   - Moneytalk: Wednesday 9AM (text) + Saturday 9AM (poll)")
     print("[DEBUG] About to start polling loop")
     app.run_polling()
-
