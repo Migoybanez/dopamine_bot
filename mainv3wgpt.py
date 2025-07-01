@@ -693,6 +693,11 @@ async def send_daily_checkins(app):
 # /start command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
+        # If in a group chat, instruct user to DM the bot and return
+        if update.effective_chat and update.effective_chat.type != "private":
+            if update.message:
+                await update.message.reply_text("Please message me privately to use /start and set up or manage your habit tracking.")
+            return
         if not update.effective_user or not update.message:
             return
         if not hasattr(context, 'user_data') or not isinstance(context.user_data, dict):
@@ -844,6 +849,9 @@ def user_wants_to_pause(text):
     return False
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Only respond to DMs (private chats)
+    if update.effective_chat and update.effective_chat.type != "private":
+        return
     print("[DEBUG] ===== handle_message called =====")
     print("[DEBUG] Update type:", type(update))
     print("[DEBUG] Has message:", hasattr(update, 'message') and update.message is not None)
@@ -1334,9 +1342,15 @@ async def handle_checkin_response(update: Update, context: ContextTypes.DEFAULT_
 # ✅ /stop command
 async def stop_tracking(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
+        # If in a group chat, instruct user to DM the bot and return
+        if update.effective_chat and update.effective_chat.type != "private":
+            if update.message:
+                await update.message.reply_text("Please message me privately to use /stop and manage your check-in subscription.")
+            return
         if not update.effective_user:
             return
-            
+        if not update.effective_chat:
+            return
         user_id = str(update.effective_user.id)
         rows = worksheet.get_all_records()
         for i, row in enumerate(rows):
@@ -1366,9 +1380,15 @@ async def stop_tracking(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ✅ /reset command
 async def reset_streak(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
+        # If in a group chat, instruct user to DM the bot and return
+        if update.effective_chat and update.effective_chat.type != "private":
+            if update.message:
+                await update.message.reply_text("Please message me privately to use /reset and manage your streak.")
+            return
         if not update.effective_user:
             return
-            
+        if not update.effective_chat:
+            return
         user_id = str(update.effective_user.id)
         timestamp = get_pht_timestamp()
 
@@ -2278,6 +2298,28 @@ async def handle_baseline_permission_callback(update: Update, context: ContextTy
             await query.message.reply_text("👍 No problem! We'll skip the baseline questions and get you set up right away.")
         await finalize_onboarding(update, context)
 
+async def announce_update(app):
+    update_message = "🚀 Kaka-install lang ng update sakin! Check out what's new or DM me for help. 💡"
+    # Announce in all groups
+    for group_name, chat_id in GROUP_CHAT_IDS.items():
+        try:
+            await app.bot.send_message(chat_id=chat_id, text=update_message)
+        except Exception as e:
+            print(f"[ERROR] Could not send update to group {group_name}: {e}")
+    # Announce to all active users
+    try:
+        rows = worksheet.get_all_records()
+        for row in rows:
+            if str(row.get("status", "")).lower() == "active":
+                user_id = row.get("user_id")
+                if user_id:
+                    try:
+                        await app.bot.send_message(chat_id=int(user_id), text=update_message)
+                    except Exception as e:
+                        print(f"[ERROR] Could not send update to user {user_id}: {e}")
+    except Exception as e:
+        print(f"[ERROR] Could not send update to users: {e}")
+
 # ✅ Start app
 if __name__ == '__main__':
     print("[DEBUG] Entered __main__ block")
@@ -2430,4 +2472,6 @@ if __name__ == '__main__':
     print("   - GameBreak: Tuesday 9AM (text) + Thursday 9AM (poll)")
     print("   - Moneytalk: Wednesday 9AM (text) + Saturday 9AM (poll)")
     print("[DEBUG] About to start polling loop")
+    # Announce update to all groups and users
+    loop.run_until_complete(announce_update(app))
     app.run_polling()
