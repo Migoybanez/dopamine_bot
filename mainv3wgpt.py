@@ -183,17 +183,13 @@ This is the main hub where we post the latest updates, content drops, announceme
 
 🧭 Whether you're here to detox from dopamine traps or build the next version of yourself, you're in good company. 🙌
 
-📍 Make sure to also join the focused groups depending on your personal goals:
-🎮 Gaming Detox – Join GameBreak
-📵 Screen Detox – Join Screen Break  
-🛡️ NoFap Recovery – Join NOFAP
-💸 Money Habits & Business Growth – Join MONEY TALK
-
-⚡ Want to start tracking your daily progress, detox streaks, or focus habits? Click the button below or DM me /start to activate your personal tracking assistant today.
-
-Let's transmute distraction into power!
-
-Message me if you need anything else! 💪""",
+📍 Make sure to also join the focused groups depending on your personal goals:\n\
+🎮 Gaming Detox – [Join GameBreak](https://t.me/+iYPfZcQMXpUwOTBl)\n\
+📵 Screen Detox – [Join Screen Break](https://t.me/+6JGDNKjg7iU3NmRl)\n\
+🛡️ NoFap Recovery – [Join NOFAP](https://t.me/+QKU6f00XDBs1ODQ1)\n\
+💸 Money Habits & Business Growth – [Join MONEY TALK](https://t.me/+li28ZSnbYj0yYzQ1)\n\
+\n⚡ Want to start tracking your daily progress, detox streaks, or focus habits? Click the button below or DM me /start to activate your personal tracking assistant today.\n\
+\nMessage me if you need anything else! 💪""",
 
     "Moneytalk": """👋 Hey @{username}! Welcome to MONEY TALK 💼
 
