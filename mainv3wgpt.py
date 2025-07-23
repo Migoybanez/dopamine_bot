@@ -2324,7 +2324,11 @@ async def announce_update(app):
 if __name__ == '__main__':
     print("[DEBUG] Entered __main__ block")
     print("[DEBUG] Starting bot setup...")
-    app = ApplicationBuilder().token("7070152877:AAEIfwdxiopaawZ-gb55LhabANLgXdYzG-Y").build()
+    TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+    if not TELEGRAM_BOT_TOKEN:
+        print("[ERROR] TELEGRAM_BOT_TOKEN environment variable is not set. Exiting.")
+        exit(1)
+    app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
 
     # Add handlers
     print("[DEBUG] Registering /start handler")
